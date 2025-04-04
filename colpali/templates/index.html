@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search complex PDF (text and graphics)</title>
+    <style>
+        body {
+            background-color: #f4f4f9;
+            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .search-container {
+            margin-top: 50px;
+            text-align: center;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .results {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .results img {
+            width: 250px;
+            height: auto;
+            margin: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.3s ease;
+        }
+        .results img:hover {
+            transform: scale(1.20);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.3s ease;
+        }
+        .modal img {
+            width: auto;
+            height: 70%; /* Take up 70% of the screen height */
+            max-width: 90%;
+            max-height: 90%; /* Set max size to 90% */
+            border-radius: 5px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .modal .close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #fff;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+        .modal.hide {
+            display: none;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <h1>Search complex PDF (text and graphics)</h1>
+        <form id="searchForm">
+            <input type="text" name="search_string" placeholder="Enter search string">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class="results" id="results"></div>
+
+    <div class="modal" id="modal">
+        <span class="close" id="closeModal">&times;</span>
+        <img id="modalImage" src="" alt="Large Image">
+    </div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = '';
+                data.file_paths.forEach(filename => {
+                    const img = document.createElement('img');
+                    img.src = `/static/${filename}`;
+                    img.onclick = () => showModal(`/static/${filename}`);
+                    resultsDiv.appendChild(img);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching images:', error);
+            });
+        });
+
+        function showModal(src) {
+            const modal = document.getElementById('modal');
+            const modalImage = document.getElementById('modalImage');
+            modalImage.src = src;
+            modal.classList.add('show');
+            modal.classList.remove('hide');
+        }
+
+        document.getElementById('closeModal').onclick = function() {
+            const modal = document.getElementById('modal');
+            modal.classList.add('hide');
+            setTimeout(() => modal.classList.remove('show'), 300); // Ensure modal hides smoothly
+        };
+
+        document.getElementById('modal').onclick = function(event) {
+            if (event.target === this) {
+                this.classList.add('hide');
+                setTimeout(() => this.classList.remove('show'), 300);
+            }
+        };
+    </script>
+</body>
+</html>
