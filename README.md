@@ -1,7 +1,6 @@
 # search-complex-pdf
 
-pip install git+https://github.com/illuin-tech/colpali.git
-pip install elasticsearch
+pip install git+https://github.com/illuin-tech/colpali.git elasticsearch
 
 Step 1 - Extract a jpeg file for each page of your pdf document
     In extractpdf.py set pdf_path = "<PDF path and filename>"    
