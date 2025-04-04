@@ -19,7 +19,7 @@ vi elastic.env
 
 ### Step 1: Extract JPEG Files from PDF
 
-1. Execute the script to extract JPEG files:
+Execute the script to extract JPEG files:
 
     ```bash
     python extractpdf.py
@@ -27,7 +27,7 @@ vi elastic.env
 
 ### Step 2: Index JPEG Files in Elasticsearch
 
-1. Execute the script to index the JPEG files:
+Execute the script to index the JPEG files:
 
     ```bash
     python indexjpegwithcolpali.py
@@ -35,13 +35,13 @@ vi elastic.env
 
 ### Step 3: Search the Document
 
-1. Execute the script to start the search application:
+Execute the script to start the search application:
 
     ```bash
     python searchapp.py
     ```
 
-2. Access the search application at:
+Access the search application at:
 
     ```
     http://127.0.0.1:5000
