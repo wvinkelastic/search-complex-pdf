@@ -6,15 +6,15 @@ This project allows you to extract JPEG files from PDF documents, index them in 
 
 To get started, install the necessary dependencies:
 
-    ```bash
+```
     pip install git+https://github.com/illuin-tech/colpali.git elasticsearch
-    ```
+```
 
 Edit the elastic.env file, ElasticSearch serverless URL, api-kep, pdf filename and index to be created.
 
-    ```bash
+```
     vi elastic.env
-    ```
+```
 
 ## Step-by-Step Guide
 
@@ -22,31 +22,31 @@ Edit the elastic.env file, ElasticSearch serverless URL, api-kep, pdf filename a
 
 Execute the script to extract JPEG files:
 
-    ```bash
+```
     python extractpdf.py
-    ```
+```
 
 ### Step 2: Index JPEG Files in Elasticsearch
 
 Execute the script to index the JPEG files:
 
-    ```bash
+```
     python indexjpegwithcolpali.py
-    ```
+```
 
 ### Step 3: Search the Document
 
 Execute the script to start the search application:
 
-    ```bash
+```
     python searchapp.py
-    ```
+```
 
 Access the search application at:
 
-    ```
+```
     http://127.0.0.1:5000
-    ```
+```
 
 ## Notes
 
