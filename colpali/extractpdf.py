@@ -1,7 +1,11 @@
-import fitz  # PyMuPDF
+from dotenv import load_dotenv
+import fitz
 from PIL import Image
 import io
 import os
+
+load_dotenv("elastic.env")
+pdf_path = os.getenv("pdf-path")
 
 def clear_directory(directory):
     """Remove all files in the specified directory."""
@@ -37,8 +41,6 @@ def pdf_to_jpeg(pdf_path, output_folder):
     pdf_document.close()
 
 def main():
-    # Path to your PDF file
-    pdf_path = "<PDF path and filename>"
     # Get the directory where this script is located
     script_directory = os.path.dirname(os.path.abspath(__file__))
     # Define the output folder as the "static" subfolder in the script's directory
@@ -48,3 +50,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
