@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 import torch
 from PIL import Image
 from colpali_engine.models import ColPali, ColPaliProcessor
@@ -5,11 +6,10 @@ from elasticsearch import Elasticsearch
 import os
 import sys
 
-# Set following
-INDEX_NAME = "<index>"
-es_url = "<url>"
-es_api = "<api>"
-# Set 
+load_dotenv("elastic.env")
+INDEX_NAME = os.getenv("index-name")
+es_url = os.getenv("elastic_url")
+es_api = os.getenv("elastic_api")
 
 model_name = "vidore/colpali-v1.3"
 
@@ -25,11 +25,6 @@ def create_col_poli_image_vectors(image_path: str) -> list:
     batch_images = col_pali_processor.process_images([Image.open(image_path)]).to(model.device)
     with torch.no_grad():
         return model(**batch_images).tolist()[0]
-
-def create_col_poli_query_vectors(query: str) -> list:
-    queries = col_pali_processor.process_queries([query]).to(model.device)
-    with torch.no_grad():
-        return model(**queries).tolist()[0]
 
 # Index mapping
 mappings = {
