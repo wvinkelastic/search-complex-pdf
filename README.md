@@ -68,13 +68,3 @@ pip install git+https://github.com/illuin-tech/colpali.git elasticsearch
 
 - Ensure your Elasticsearch serverless deployment is properly configured and accessible.
 - Replace placeholders (`<PDF path and filename>`, `<index>`, `<url>`, `<api>`) with actual values specific to your setup.
-
-This README provides a concise guide to setting up and using the `search-complex-pdf` project. Follow the steps to extract, index, and search PDF documents efficiently.
-```
-
-### Key Points:
-- **Markdown Formatting**: The README uses Markdown for clear formatting, including code blocks and sections.
-- **Installation Instructions**: Provides a command to install necessary dependencies.
-- **Step-by-Step Guide**: Breaks down the process into clear steps with instructions for each script.
-- **Configuration Details**: Highlights where to set specific configuration values in the scripts.
-- **Access Information**: Provides the URL to access the search application.
