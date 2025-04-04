@@ -38,7 +38,7 @@ def pdf_to_jpeg(pdf_path, output_folder):
 
 def main():
     # Path to your PDF file
-    pdf_path = "/Users/williamvink/Documents/plannungs handbuch/Planungshandbuch Version 2.2.pdf"
+    pdf_path = "<PDF path and filename>"
     # Get the directory where this script is located
     script_directory = os.path.dirname(os.path.abspath(__file__))
     # Define the output folder as the "static" subfolder in the script's directory
