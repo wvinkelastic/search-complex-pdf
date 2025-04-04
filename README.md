@@ -1,6 +1,3 @@
-Here's a formatted GitHub README entry for your project, `search-complex-pdf`, using Markdown:
-
-```markdown
 # search-complex-pdf
 
 This project allows you to extract JPEG files from PDF documents, index them in Elasticsearch, and perform searches on the indexed data.
