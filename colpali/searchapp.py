@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify
 import torch
 from colpali_engine.models import ColPali, ColPaliProcessor
@@ -7,11 +8,10 @@ import sys
 
 app = Flask(__name__,static_folder='static')
 
-# Set following
-INDEX_NAME = "<index>"
-es_url = "<url>"
-es_api = "<api>"
-# Set 
+load_dotenv("elastic.env")
+INDEX_NAME = os.getenv("index-name")
+es_url = os.getenv("elastic_url")
+es_api = os.getenv("elastic_api")
 
 model_name = "vidore/colpali-v1.3"
 model = ColPali.from_pretrained(
@@ -66,3 +66,4 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
