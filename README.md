@@ -10,6 +10,10 @@ To get started, install the necessary dependencies:
 pip install git+https://github.com/illuin-tech/colpali.git elasticsearch
 ```
 
+```Edit the elastic.env file
+vi elastic.env
+```
+
 ## Step-by-Step Guide
 
 ### Step 1: Extract JPEG Files from PDF
