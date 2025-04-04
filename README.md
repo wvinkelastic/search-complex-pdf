@@ -8,7 +8,7 @@ Step 1 - Extract a jpeg file for each page of your pdf document
 
 Step 2 - Index the extracted jpeg files to a new index in your Elasticsearch serverless deployment
     In indexjpegwithcolpali.py set   
-        INDEX_NAME = "<index>"
+        INDEX_NAME = "<index>" 
         es_url = "<url>"
         es_api = "<api>"
     Execute indexjpegwithcolpali.py
