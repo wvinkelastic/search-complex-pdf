@@ -7,7 +7,7 @@ This project allows you to extract JPEG files from PDF documents, index them in 
 To get started, install the necessary dependencies:
 
 ```
-pip install git+https://github.com/illuin-tech/colpali.git elasticsearch
+pip install git+https://github.com/illuin-tech/colpali.git elasticsearch PIL PyMuPDF Pillow Flask colpali-engine dotenv
 ```
 
 Edit the elastic.env file, ElasticSearch serverless URL, api-kep, pdf filename and index to be created.
