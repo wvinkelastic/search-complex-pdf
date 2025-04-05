@@ -11,10 +11,10 @@ pip install git+https://github.com/illuin-tech/colpali.git elasticsearch PIL PyM
 ```
 
 Edit the elastic.env file, ElasticSearch serverless URL, api-kep, pdf filename and index to be created.
-  elastic_url = "<url>"
-  elastic_api = "<api-key>"
-  pdf-path = "<full directory plus file name .pdf>"
-  index-name = "<Elastic index>"
+- elastic_url = "<url>"
+- elastic_api = "<api-key>"
+- pdf-path = "<full directory plus file name .pdf>"
+- index-name = "<Elastic index>"
 
 ```
 vi elastic.env
