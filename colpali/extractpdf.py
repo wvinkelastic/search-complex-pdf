@@ -19,6 +19,22 @@ def clear_directory(directory):
         except Exception as e:
             print(f'Failed to delete {file_path}. Reason: {e}')
 
+def is_valid_pdf(pdf_path):
+    """Check if the provided path is a valid PDF file."""
+    if not os.path.isfile(pdf_path):
+        print(f"Error: The path {pdf_path} does not exist or is not a valid file.")
+        return False
+    if not pdf_path.lower().endswith('.pdf'):
+        print(f"Error: The file at {pdf_path} is not a PDF (it doesn't have a .pdf extension).")
+        return False
+    try:
+        # Try to open the PDF to check if it's a valid PDF file
+        fitz.open(pdf_path)
+    except Exception as e:
+        print(f"Error: The file at {pdf_path} is not a valid PDF. {e}")
+        return False
+    return True
+
 def pdf_to_jpeg(pdf_path, output_folder):
     """Convert each page of a PDF to a JPEG image and save them in the output folder."""
     # Ensure the output directory exists and is empty
@@ -26,6 +42,7 @@ def pdf_to_jpeg(pdf_path, output_folder):
         os.makedirs(output_folder)
     else:
         clear_directory(output_folder)
+
     # Open the PDF file
     pdf_document = fitz.open(pdf_path)
     num_pages = pdf_document.page_count
@@ -41,6 +58,11 @@ def pdf_to_jpeg(pdf_path, output_folder):
     pdf_document.close()
 
 def main():
+    # Validate PDF file
+    if not is_valid_pdf(pdf_path):
+        print("Invalid PDF file. Exiting program.")
+        return
+
     # Get the directory where this script is located
     script_directory = os.path.dirname(os.path.abspath(__file__))
     # Define the output folder as the "static" subfolder in the script's directory
@@ -50,4 +72,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
