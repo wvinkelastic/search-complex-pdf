@@ -71,7 +71,7 @@ def index():
         images = [Image.open(image_path) for image_path in image_paths]
         response = client.models.generate_content(
             model="gemini-2.5-pro-preview-03-25",
-            contents=[images, "Summarize these pictures in not more than 10 sentences. Result should be an easy-to-read paragraph. Only use the information on the pictures."]
+            contents=[images, query + " Answer the question in not more than 10 sentences. Result should be an easy-to-read paragraph. Only use the information on the images to answer the question."]
         )
         google_time = time.time() - start_time
         
