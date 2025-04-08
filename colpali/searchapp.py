@@ -5,6 +5,9 @@ from colpali_engine.models import ColPali, ColPaliProcessor
 from elasticsearch import Elasticsearch
 import os
 import sys
+from google import genai
+from PIL import Image
+import time
 
 app = Flask(__name__,static_folder='static')
 
@@ -12,6 +15,10 @@ load_dotenv("elastic.env")
 INDEX_NAME = os.getenv("index-name")
 es_url = os.getenv("elastic_url")
 es_api = os.getenv("elastic_api")
+google_api_key = os.getenv("google_api_key")
+
+client = genai.Client(api_key=google_api_key)
+es = Elasticsearch(es_url, api_key=es_api)
 
 model_name = "vidore/colpali-v1.3"
 model = ColPali.from_pretrained(
@@ -27,19 +34,18 @@ def create_col_pali_query_vectors(query: str) -> list:
     with torch.no_grad():
         return model(**queries).tolist()[0]
 
-es = Elasticsearch(es_url, api_key=es_api)
-
 # Check if the index exists
 if not es.indices.exists(index=INDEX_NAME):
     print(f"Index '{INDEX_NAME}' doesn't exists. Exiting script.")
     sys.exit()
 
 @app.route('/', methods=['GET', 'POST'])
-
 def index():
     if request.method == 'POST':
         query = request.form.get('search_string')
         
+        # Measure Elasticsearch query time
+        start_time = time.time()
         es_query = {
             "_source": False,
             "query": {
@@ -55,15 +61,25 @@ def index():
         }
         
         results = es.search(index=INDEX_NAME, body=es_query)
+        es_time = time.time() - start_time
 
         file_paths = [os.path.basename(hit['_id']) for hit in results['hits']['hits']]
-
-        for file_path in file_paths:
-            print(file_path)
-
-        return jsonify(file_paths=file_paths)
-    return render_template('index.html', file_paths=[])
+        image_paths = [hit['_id'] for hit in results['hits']['hits']]
+        
+        # Measure Google Gemini query time
+        start_time = time.time()
+        images = [Image.open(image_path) for image_path in image_paths]
+        response = client.models.generate_content(
+            model="gemini-2.5-pro-preview-03-25",
+            contents=[images, "Summarize these pictures in not more than 10 sentences. Result should be an easy-to-read paragraph. Only use the information on the pictures."]
+        )
+        google_time = time.time() - start_time
+        
+        # Return file paths and response times
+        return jsonify(file_paths=file_paths, response_text=response.text, es_time=es_time, google_time=google_time)
+    
+    return render_template('index.html', file_paths=[], response_text="", es_time=0, google_time=0)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
     
