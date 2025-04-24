@@ -17,6 +17,8 @@ es_url = os.getenv("elastic_url")
 es_api = os.getenv("elastic_api")
 google_api_key = os.getenv("google_api_key")
 
+google_model = "gemini-2.0-flash-lite"
+
 client = genai.Client(api_key=google_api_key)
 es = Elasticsearch(es_url, api_key=es_api)
 
@@ -61,16 +63,20 @@ def index():
         }
         
         results = es.search(index=INDEX_NAME, body=es_query)
-        es_time = time.time() - start_time
+        #es_time = time.time() - start_time
+        es_time = results['took'] / 1000
 
         file_paths = [os.path.basename(hit['_id']) for hit in results['hits']['hits']]
         image_paths = [hit['_id'] for hit in results['hits']['hits']]
-        
+
+        image_scores = [(hit['_score']) for hit in results['hits']['hits']]
+        print(image_scores)
+
         # Measure Google Gemini query time
         start_time = time.time()
         images = [Image.open(image_path) for image_path in image_paths]
         response = client.models.generate_content(
-            model="gemini-2.5-pro-preview-03-25",
+            model=google_model,
             contents=[images, query + " Answer the question in not more than 10 sentences. Result should be an easy-to-read paragraph. Only use the information on the images to answer the question."]
         )
         google_time = time.time() - start_time
